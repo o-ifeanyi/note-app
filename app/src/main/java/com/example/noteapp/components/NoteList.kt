@@ -15,11 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.noteapp.screens.NoteAppViewModel
+import com.example.noteapp.util.formatDate
 
 @Composable
 fun NoteList() {
@@ -34,20 +34,23 @@ fun NoteList() {
                     .clip(
                         shape = CircleShape.copy(
                             topStart = CornerSize(0.dp),
-                            bottomEnd = CornerSize(0.dp)
+                            bottomEnd = CornerSize(0.dp),
+                            topEnd = CornerSize(15.dp),
+                            bottomStart = CornerSize(15.dp)
                         )
                     )
                     .clickable { viewModel.removeNote(it) },
-                color = Color.LightGray
+                color = MaterialTheme.colors.primary.copy(.1f)
             ) {
-                Column(modifier = Modifier
-                    .padding(15.dp)
-                    .fillMaxWidth()) {
+                Column(
+                    modifier = Modifier
+                        .padding(15.dp)
+                        .fillMaxWidth()
+                ) {
                     Text(text = it.title, fontWeight = FontWeight.Bold)
                     Text(text = it.description)
-                    // "EEE d MMM @h:mm a"
                     Text(
-                        text = it.createdAt.toString(),
+                        text = formatDate(it.createdAt),
                         style = MaterialTheme.typography.caption
                     )
                 }

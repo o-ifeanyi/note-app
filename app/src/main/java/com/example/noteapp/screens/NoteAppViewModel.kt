@@ -1,6 +1,5 @@
 package com.example.noteapp.screens
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noteapp.models.Note
@@ -22,20 +21,16 @@ class NoteAppViewModel @Inject constructor(private val noteRepository: NoteRepos
     init {
         viewModelScope.launch(Dispatchers.IO) {
             noteRepository.getAllNotes().distinctUntilChanged().collect {
-                if (it.isEmpty()) {
-                    Log.d("TAG", "Empty List: ")
-                } else {
-                    _allNotes.value = it
-                }
+                _allNotes.value = it
             }
         }
     }
 
-     fun addNote(note: Note) {
+    fun addNote(note: Note) {
         viewModelScope.launch { noteRepository.addNote(note) }
     }
 
-     fun removeNote(note: Note) {
+    fun removeNote(note: Note) {
         viewModelScope.launch { noteRepository.deleteNote(note) }
     }
 
